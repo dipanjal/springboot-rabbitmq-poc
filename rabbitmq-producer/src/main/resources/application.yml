@@ -1,0 +1,5 @@
+server:
+  port: ${APPLICATION_PORT:8081}
+spring:
+  rabbitmq:
+    addresses: ${RABBITMQ_URL:13.233.233.169:5672}

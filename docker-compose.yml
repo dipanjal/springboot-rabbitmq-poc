@@ -1,0 +1,45 @@
+version: "3.2"
+services:
+  rabbitmq-server:
+    image: rabbitmq:3-management
+    container_name: 'rabbitmq'
+    ports:
+        - 5672:5672
+        - 15672:15672
+    # volumes:
+    #     - ./rabbitmq/data/:/var/lib/rabbitmq/
+    #     - ./rabbitmq/log/:/var/log/rabbitmq
+    networks:
+        - rabbitmq_net
+
+  rabbitmq-producer:
+    build:
+      context: ./rabbitmq-producer/Dockerfile
+    image: dipanjalmaitra/rabbitmq-producer:latest
+    ports:
+      - 8085:8081
+    restart: on-failure
+    networks:
+      - rabbitmq_net
+    depends_on:
+      - rabbitmq-server
+    environment:
+      ACTIVE_PROFILE: default
+
+  rabbitmq-consumer:
+    build:
+      context: ./rabbitmq-consumer/Dockerfile
+    image: dipanjalmaitra/rabbitmq-consumer:latest
+    ports:
+      - 8085:8081
+    restart: on-failure
+    networks:
+      - rabbitmq_net
+    depends_on:
+      - rabbitmq-server
+    environment:
+      ACTIVE_PROFILE: default
+
+networks:
+  rabbitmq_net:
+    driver: bridge
