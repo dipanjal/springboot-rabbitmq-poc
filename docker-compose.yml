@@ -1,4 +1,4 @@
-version: "3.2"
+version: "3.9"
 services:
   rabbitmq-server:
     image: rabbitmq:3-management
@@ -14,8 +14,10 @@ services:
 
   rabbitmq-producer:
     build:
-      context: ./rabbitmq-producer/Dockerfile
+      context: ./rabbitmq-producer
+      dockerfile: Dockerfile
     image: dipanjalmaitra/rabbitmq-producer:latest
+    container_name: 'rabbitmq-producer-app'
     ports:
       - 8085:8081
     restart: on-failure
@@ -28,10 +30,12 @@ services:
 
   rabbitmq-consumer:
     build:
-      context: ./rabbitmq-consumer/Dockerfile
+      context: ./rabbitmq-consumer
+      dockerfile: Dockerfile
     image: dipanjalmaitra/rabbitmq-consumer:latest
+    container_name: 'rabbitmq-consumer-app'
     ports:
-      - 8085:8081
+      - 8086:8082
     restart: on-failure
     networks:
       - rabbitmq_net
