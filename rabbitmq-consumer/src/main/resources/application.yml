@@ -3,3 +3,5 @@ server:
 spring:
   rabbitmq:
     addresses: ${RABBITMQ_URL:13.233.233.169:5672}
+  application:
+    name: rabbitmq-consumer
